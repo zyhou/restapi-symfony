@@ -77,4 +77,32 @@ class UserController extends Controller
         }
     }
 
+    /**
+     * @Rest\View()
+     * @Rest\Put("/users/{id}")
+     */
+    public function updateUserAction(Request $request)
+    {
+        $user = $this->getDoctrine()->getManager()
+            ->getRepository('AppBundle:User')
+            ->find($request->get('id'));
+
+        if (empty($user)) {
+            return new JsonResponse(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $form = $this->createForm(UserType::class, $user);
+
+        $form->submit($request->request->all());
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->merge($user);
+            $em->flush();
+            return $user;
+        } else {
+            return $form;
+        }
+    }
+
 }
