@@ -83,7 +83,21 @@ class PlaceController extends Controller
      * @Rest\View()
      * @Rest\Put("/places/{id}")
      */
-    public function putPlaceAction(Request $request)
+    public function updatePlaceAction(Request $request)
+    {
+        return $this->updatePlace($request, true);
+    }
+
+    /**
+     * @Rest\View()
+     * @Rest\Patch("/places/{id}")
+     */
+    public function patchPlaceAction(Request $request)
+    {
+        return $this->updatePlace($request, false);
+    }
+
+    private function updatePlace(Request $request, $clearMissing)
     {
         $place = $this->getDoctrine()->getManager()
             ->getRepository('AppBundle:Place')
@@ -95,11 +109,13 @@ class PlaceController extends Controller
 
         $form = $this->createForm(PlaceType::class, $place);
 
-        $form->submit($request->request->all());
+        // Le paramètre false dit à Symfony de garder les valeurs dans notre
+        // entité si l'utilisateur n'en fournit pas une dans sa requête
+        $form->submit($request->request->all(), $clearMissing);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->merge($place);
+            $em->persist($place);
             $em->flush();
             return $place;
         } else {
