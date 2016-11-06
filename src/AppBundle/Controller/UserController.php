@@ -24,6 +24,23 @@ class UserController extends Controller
     }
 
     /**
+     * @Rest\View()
+     * @Rest\Get("/users/{user_id}")
+     */
+    public function getUserAction(Request $request)
+    {
+        $user = $this->getDoctrine()->getManager()
+            ->getRepository('AppBundle:User')
+            ->find($request->get('user_id'));
+
+        if (empty($user)) {
+            return new JsonResponse(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        return $user;
+    }
+
+    /**
      * @Rest\View(statusCode=Response::HTTP_CREATED)
      * @Rest\Post("/users")
      */
@@ -45,20 +62,19 @@ class UserController extends Controller
     }
 
     /**
-     * @Rest\View()
-     * @Rest\Get("/users/{user_id}")
+     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
+     * @Rest\Delete("/users/{id}")
      */
-    public function getUserAction(Request $request)
+    public function removeUserAction(Request $request)
     {
-        $user = $this->getDoctrine()->getManager()
-            ->getRepository('AppBundle:User')
-            ->find($request->get('user_id'));
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('AppBundle:User')
+            ->find($request->get('id'));
 
-        if (empty($user)) {
-            return new JsonResponse(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
+        if ($user) {
+            $em->remove($user);
+            $em->flush();
         }
-
-        return $user;
     }
 
 }

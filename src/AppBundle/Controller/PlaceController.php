@@ -26,6 +26,23 @@ class PlaceController extends Controller
     }
 
     /**
+     * @Rest\View()
+     * @Rest\Get("/places/{id}")
+     */
+    public function getPlaceAction(Request $request)
+    {
+        $place = $this->getDoctrine()->getManager()
+            ->getRepository('AppBundle:Place')
+            ->find($request->get('id'));
+
+        if (empty($place)) {
+            return new JsonResponse(['message' => 'Place not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        return $place;
+    }
+
+    /**
      * @Rest\View(statusCode=Response::HTTP_CREATED)
      * @Rest\Post("/places")
      */
@@ -47,19 +64,20 @@ class PlaceController extends Controller
     }
 
     /**
-     * @Rest\View()
-     * @Rest\Get("/places/{id}")
+     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
+     * @Rest\Delete("/places/{id}")
      */
-    public function getPlaceAction(Request $request)
+    public function removePlaceAction(Request $request)
     {
-        $place = $this->getDoctrine()->getManager()
-            ->getRepository('AppBundle:Place')
-            ->find($request->get('id'));
+        $em = $this->getDoctrine()->getManager();
+        $place = $em->getRepository('AppBundle:Place')
+                    ->find($request->get('id'));
 
-        if (empty($place)) {
-            return new JsonResponse(['message' => 'Place not found'], Response::HTTP_NOT_FOUND);
+        if ($place) {
+            $em->remove($place);
+            $em->flush();
         }
-
-        return $place;
     }
+
+
 }
