@@ -7,8 +7,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\View\ViewHandler;
-use FOS\RestBundle\View\View;
 use AppBundle\Entity\Place;
 
 class PlaceController extends Controller
@@ -27,25 +25,20 @@ class PlaceController extends Controller
         return $places;
     }
 
-//    /**
-//     * @Get("/places/{id}")
-//     */
-//    public function getPlaceAction($id, Request $request)
-//    {
-//        $place = $this->getDoctrine()->getManager()
-//            ->getRepository('AppBundle:Place')
-//            ->find($id);
-//
-//        if (empty($place)) {
-//            return new JsonResponse(['message' => 'Place not found'], Response::HTTP_NOT_FOUND);
-//        }
-//
-//        $formatted = [
-//            'id' => $place->getId(),
-//            'name' => $place->getName(),
-//            'address' => $place->getAddress(),
-//        ];
-//
-//        return new JsonResponse($formatted);
-//    }
+    /**
+     * @Rest\View()
+     * @Rest\Get("/places/{id}")
+     */
+    public function getPlaceAction(Request $request)
+    {
+        $place = $this->getDoctrine()->getManager()
+            ->getRepository('AppBundle:Place')
+            ->find($request->get('id'));
+
+        if (empty($place)) {
+            return new JsonResponse(['message' => 'Place not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        return $place;
+    }
 }
