@@ -29,7 +29,7 @@ class Price
     protected $value;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Place", inversedBy="prices")
+     * @ORM\ManyToOne(targetEntity="\AppBundle\Entity\Place", inversedBy="prices")
      * @var Place
      */
     protected $place;
@@ -76,19 +76,15 @@ class Price
         return $this;
     }
 
-    /**
-     * @return Place
-     */
     public function getPlace()
     {
         return $this->place;
     }
 
-    public function setPlace($place)
+    public function setPlace(\AppBundle\Entity\Place $place)
     {
         $this->place = $place;
         return $this;
     }
-
 
 }

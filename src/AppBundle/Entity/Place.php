@@ -2,11 +2,12 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity()
  * @ORM\Table(name="places",
- *      uniqueConstraints={@ORM\UniqueConstraint(name="places_name_unique",columns={"name"})}
+ *      uniqueConstraints={@ORM\UniqueConstraint(name="places_name_unique",columns={"name"})})
  */
 class Place
 {
@@ -28,7 +29,7 @@ class Place
     protected $address;
 
     /**
-     * @ORM\OneToMany(targetEntity="Price", mappedBy="place")
+     * @ORM\OneToMany(targetEntity="\AppBundle\Entity\Price", mappedBy="place")
      * @var Price[]
      */
     protected $prices;
@@ -72,15 +73,36 @@ class Place
     }
 
     /**
-     * @return Price[]
+     * Add price
+     *
+     * @param \AppBundle\Entity\Price $price
+     *
+     * @return Place
+     */
+    public function addPrice(\AppBundle\Entity\Price $price)
+    {
+        $this->prices[] = $price;
+
+        return $this;
+    }
+
+    /**
+     * Remove price
+     *
+     * @param \AppBundle\Entity\Price $price
+     */
+    public function removePrice(\AppBundle\Entity\Price $price)
+    {
+        $this->prices->removeElement($price);
+    }
+
+    /**
+     * Get prices
+     *
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPrices()
     {
         return $this->prices;
-    }
-    public function setPrices($prices)
-    {
-        $this->prices = $prices;
-        return $this;
     }
 }
