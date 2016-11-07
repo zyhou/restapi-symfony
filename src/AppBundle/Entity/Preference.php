@@ -73,6 +73,7 @@ class Preference
     public function setUser(User $user)
     {
         $this->user = $user;
+        return $this;
     }
 
     // Pour savoir si le theme a le même nom que la préférence

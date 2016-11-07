@@ -81,6 +81,10 @@ class PlaceController extends Controller
         foreach ($place->getPrices() as $price) {
             $em->remove($price);
         }
+
+        foreach ($place->getThemes() as $theme) {
+            $em->remove($theme);
+        }
         $em->remove($place);
         $em->flush();
     }

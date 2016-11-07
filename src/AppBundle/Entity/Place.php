@@ -89,7 +89,6 @@ class Place
     public function addPrice(\AppBundle\Entity\Price $price)
     {
         $this->prices[] = $price;
-
         return $this;
     }
 
@@ -113,13 +112,36 @@ class Place
         return $this->prices;
     }
 
+    /**
+     * Add price
+     *
+     * @param \AppBundle\Entity\Theme $theme
+     *
+     * @return Place
+     */
+    public function addTheme(\AppBundle\Entity\Theme $theme)
+    {
+        $this->themes[] = $theme;
+        return $this;
+    }
+
+    /**
+     * Remove price
+     *
+     * @param \AppBundle\Entity\Price $price
+     */
+    public function removeTheme(\AppBundle\Entity\Theme $theme)
+    {
+        $this->themes->removeElement($theme);
+    }
+
+    /**
+     * Get prices
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
     public function getThemes()
     {
         return $this->themes;
-    }
-
-    public function setThemes($themes)
-    {
-        $this->themes = $themes;
     }
 }

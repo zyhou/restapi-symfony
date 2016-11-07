@@ -73,5 +73,6 @@ class Theme
     public function setPlace(Place $place)
     {
         $this->place = $place;
+        return $this;
     }
 }

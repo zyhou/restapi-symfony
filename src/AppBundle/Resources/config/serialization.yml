@@ -8,7 +8,8 @@ AppBundle\Entity\Place:
             groups: ['place', 'price', 'theme']
         prices:
             groups: ['place']
-
+        themes:
+             groups: ['place']
 
 AppBundle\Entity\Price:
     attributes:
