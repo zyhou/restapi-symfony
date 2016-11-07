@@ -2,6 +2,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity()
@@ -32,6 +33,17 @@ class User
      * @ORM\Column(type="string")
      */
     protected $email;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Preference", mappedBy="user")
+     * @var Preference[]
+     */
+    protected $preferences;
+
+    public function __construct()
+    {
+        $this->preferences = new ArrayCollection();
+    }
 
     public function getId()
     {
@@ -71,5 +83,15 @@ class User
     public function setEmail($email)
     {
         $this->email = $email;
+    }
+
+    public function getPreferences()
+    {
+        return $this->preferences;
+    }
+
+    public function setPreferences($preferences)
+    {
+        $this->preferences = $preferences;
     }
 }
