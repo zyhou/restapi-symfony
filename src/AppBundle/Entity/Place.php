@@ -27,6 +27,17 @@ class Place
      */
     protected $address;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Price", mappedBy="place")
+     * @var Price[]
+     */
+    protected $prices;
+
+    public function __construct()
+    {
+        $this->prices = new ArrayCollection();
+    }
+
     public function getId()
     {
         return $this->id;
@@ -57,6 +68,19 @@ class Place
     public function setAddress($address)
     {
         $this->address = $address;
+        return $this;
+    }
+
+    /**
+     * @return Price[]
+     */
+    public function getPrices()
+    {
+        return $this->prices;
+    }
+    public function setPrices($prices)
+    {
+        $this->prices = $prices;
         return $this;
     }
 }
