@@ -12,6 +12,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class User
 {
+
+    const MATCH_VALUE_THRESHOLD = 25;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -93,5 +96,20 @@ class User
     public function setPreferences($preferences)
     {
         $this->preferences = $preferences;
+    }
+
+    // Défini le niveau de correspondance entre un lieu et les préférences pour un user
+    public function preferencesMatch($themes)
+    {
+        $matchValue = 0;
+        foreach ($this->preferences as $preference) {
+            foreach ($themes as $theme) {
+                if ($preference->match($theme)) {
+                    $matchValue += $preference->getValue() * $theme->getValue();
+                }
+            }
+        }
+
+        return $matchValue >= self::MATCH_VALUE_THRESHOLD;
     }
 }

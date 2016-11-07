@@ -74,4 +74,10 @@ class Preference
     {
         $this->user = $user;
     }
+
+    // Pour savoir si le theme a le même nom que la préférence
+    public function match(Theme $theme)
+    {
+        return $this->name === $theme->getName();
+    }
 }
