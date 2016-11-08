@@ -1,68 +1,44 @@
-Symfony Standard Edition
-========================
+#Symfony Rest API
 
-Welcome to the Symfony Standard Edition - a fully-functional Symfony
-application that you can use as the skeleton for your new applications.
+Projet simple d'une Rest API avec Symfony.
 
-For details on how to download and get started with Symfony, see the
-[Installation][1] chapter of the Symfony Documentation.
+**Installation des prérequis :**
 
-What's inside?
---------------
+- PHP / Composer / Wamp / phphmyadmin
+- Postman est un plus
 
-The Symfony Standard Edition is configured with the following defaults:
+Utilisation de FOSRestBundle pour l'API en Rest.
 
-  * An AppBundle you can use to start coding;
+**Mise en place de la base de données :**
+```
+php bin/console doctrine:database:create
+php bin/console doctrine:schema:update --dump-sql --force
+```
 
-  * Twig as the only configured template engine;
+**Remplir la base de données :** 
+```
+INSERT INTO `places` (`id`, `name`, `address`) VALUES (NULL, 'Tour Eiffel', '5 Avenue Anatole France, 75007 Paris'), (NULL, 'Mont-Saint-Michel', '50170 Le Mont-Saint-Michel'), (NULL, 'Château de Versailles', 'Place d''Armes, 78000 Versailles')
+INSERT INTO `users` (`id`, `firstname`, `lastname`, `email`) VALUES (NULL, 'Ab', 'Cde', 'ab.cde@test.local'), (NULL, 'Ef', 'Ghi', 'ef.ghi@test.local');
+```
 
-  * Doctrine ORM/DBAL;
+**Récupérer les dépendances :**
 
-  * Swiftmailer;
+```
+php composer.phar install
+```
 
-  * Annotations enabled for everything.
+**Utilisation de l'API :**
 
-It comes pre-configured with the following bundles:
+Ajouter des prix pour une place
+![Alt text](/assets/addPrice.png?raw=true "Ajouter un prix")
 
-  * **FrameworkBundle** - The core Symfony framework bundle
+Ajouter des préférences pour un utilisateur (le faire plusieurs voir avec d'autre information)
+![Alt text](/assets/addPreference.png?raw=true "Ajouter une préférence")
 
-  * [**SensioFrameworkExtraBundle**][6] - Adds several enhancements, including
-    template and routing annotation capability
+Ajouter des thémes pour une place
+![Alt text](/assets/addThemes.png?raw=true "Ajouter un théme")
 
-  * [**DoctrineBundle**][7] - Adds support for the Doctrine ORM
+Et pour finir avoir des suggestions pour un utilisateur 
+![Alt text](/assets/addSuggestions.png?raw=true "Avoir des suggestions")
 
-  * [**TwigBundle**][8] - Adds support for the Twig templating engine
-
-  * [**SecurityBundle**][9] - Adds security by integrating Symfony's security
-    component
-
-  * [**SwiftmailerBundle**][10] - Adds support for Swiftmailer, a library for
-    sending emails
-
-  * [**MonologBundle**][11] - Adds support for Monolog, a logging library
-
-  * **WebProfilerBundle** (in dev/test env) - Adds profiling functionality and
-    the web debug toolbar
-
-  * **SensioDistributionBundle** (in dev/test env) - Adds functionality for
-    configuring and working with Symfony distributions
-
-  * [**SensioGeneratorBundle**][13] (in dev/test env) - Adds code generation
-    capabilities
-
-  * **DebugBundle** (in dev/test env) - Adds Debug and VarDumper component
-    integration
-
-All libraries and bundles included in the Symfony Standard Edition are
-released under the MIT or BSD license.
-
-Enjoy!
-
-[1]:  https://symfony.com/doc/3.0/book/installation.html
-[6]:  https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/index.html
-[7]:  https://symfony.com/doc/3.0/book/doctrine.html
-[8]:  https://symfony.com/doc/3.0/book/templating.html
-[9]:  https://symfony.com/doc/3.0/book/security.html
-[10]: https://symfony.com/doc/3.0/cookbook/email.html
-[11]: https://symfony.com/doc/3.0/cookbook/logging/monolog.html
-[13]: https://symfony.com/doc/3.0/bundles/SensioGeneratorBundle/index.html
+Si vous avez une question ou autre, n'hésitez pas.
