@@ -3,6 +3,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity()
@@ -10,7 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *      uniqueConstraints={@ORM\UniqueConstraint(name="users_email_unique",columns={"email"})}
  * )
  */
-class User
+class User implements UserInterface
 {
 
     const MATCH_VALUE_THRESHOLD = 25;
@@ -42,6 +43,14 @@ class User
      * @var Preference[]
      */
     protected $preferences;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $password;
+
+    // Surtout pas en BDD, sert juste pour la création/modification en clair de l'utilisateur
+    protected $plainPassword;
 
     public function __construct()
     {
@@ -96,6 +105,47 @@ class User
     public function setPreferences($preferences)
     {
         $this->preferences = $preferences;
+    }
+
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    public function setPassword($password)
+    {
+        $this->password = $password;
+    }
+
+    public function getRoles()
+    {
+        return [];
+    }
+
+    public function getSalt()
+    {
+        return null;
+    }
+
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    public function eraseCredentials()
+    {
+        // Suppression des données sensibles
+        $this->plainPassword = null;
     }
 
     // Défini le niveau de correspondance entre un lieu et les préférences pour un user

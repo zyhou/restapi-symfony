@@ -1,11 +1,14 @@
 <?php
 namespace AppBundle\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use AppBundle\Form\Type\UserType;
 use AppBundle\Entity\User;
 
 class UserController extends Controller
@@ -47,11 +50,17 @@ class UserController extends Controller
     public function postUsersAction(Request $request)
     {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserType::class, $user, ['validation_groups'=>['Default', 'New']]);
 
         $form->submit($request->request->all());
 
         if ($form->isValid()) {
+
+            $encoder = $this->get('security.password_encoder');
+            // le mot de passe en claire est encodé avant la sauvegarde
+            $encoded = $encoder->encodePassword($user, $user->getPlainPassword());
+            $user->setPassword($encoded);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
@@ -105,11 +114,26 @@ class UserController extends Controller
             return $this->userNotFound();
         }
 
-        $form = $this->createForm(UserType::class, $user);
+        // Si une mise à jour complète, le mot de passe doit être validé
+        if ($clearMissing) {
+            $options = ['validation_groups'=>['Default', 'FullUpdate']];
+        } else {
+            $options = [];
+        }
+
+        $form = $this->createForm(UserType::class, $user, $options);
 
         $form->submit($request->request->all(), $clearMissing);
 
         if ($form->isValid()) {
+
+            // Si l'utilisateur veut changer son mot de passe
+            if (!empty($user->getPlainPassword())) {
+                $encoder = $this->get('security.password_encoder');
+                $encoded = $encoder->encodePassword($user, $user->getPlainPassword());
+                $user->setPassword($encoded);
+            }
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
