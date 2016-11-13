@@ -27,6 +27,11 @@ INSERT INTO `users` (`id`, `firstname`, `lastname`, `email`) VALUES (NULL, 'Ab',
 php composer.phar install
 ```
 
+**Supprimer la sécurité mise en place :**
+
+Allez dans le fichier app/config/security.yml, dans la section main décommenter la ligne 'anonymous' et commenter le reste de la section.   
+Nous réactiverons plus tard.
+
 **Utilisation de l'API :**
 
 Ajouter des prix pour une place
@@ -38,7 +43,20 @@ Ajouter des préférences pour un utilisateur (le faire plusieurs voir avec d'au
 Ajouter des thémes pour une place
 ![Alt text](/assets/addThemes.png?raw=true "Ajouter un théme")
 
-Et pour finir avoir des suggestions pour un utilisateur 
+Avoir des suggestions pour un utilisateur 
 ![Alt text](/assets/addSuggestions.png?raw=true "Avoir des suggestions")
+
+
+**Sécurisation de l'API :**
+
+Création d'un utilisateur avec un mot de passe
+![Alt text](/assets/addUsers.png?raw=true "Création utilisateur")
+
+Création d'un token pour l'utilisateur
+![Alt text](/assets/addToken.png?raw=true "Création d'un token")
+
+Retourner dans app/config/security.yml et commenter la ligne 'anonymous', décommenter le reste.
+
+Et voila maintenant notre API est sércurité, pour faire des appels il nous faut rajouter un header X-Auth-Token avec le token généré précédemment.
 
 Si vous avez une question ou autre, n'hésitez pas.
